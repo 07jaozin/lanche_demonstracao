@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 
+    - primary meta tags
+  -->
+  <title>Grilli - Amazing & Delicious Food</title>
+  <meta name="title" content="Grilli - Amazing & Delicious Food">
+  <meta name="description" content="This is a Restaurant html template made by codewithsadee">
+
+  <!-- 
+    - favicon
+  -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.css">
+
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css')}}">
+
+  <!-- 
+    - preload images
+  -->
+  <link rel="preload" as="image" href="./assets/images/hero-slider-1.jpg">
+  <link rel="preload" as="image" href="./assets/images/hero-slider-2.jpg">
+  <link rel="preload" as="image" href="./assets/images/hero-slider-3.jpg">
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #PRELOADER
+  -->
+
+  <div class="preload" data-preaload>
+    
+  </div>
+
+
+
+
+
+  <!-- 
+    - #TOP BAR
+  -->
+
+
+    
+
+
+
+
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <a href="#" class="logo">
+        <img src="{{ url_for('static', filename='img/mc.png')}}" width="60" height="50" alt="Grilli - Home">
+      </a>
+
+      <nav class="navbar" data-navbar>
+
+        <button class="close-btn" aria-label="close menu" data-nav-toggler>
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+
+        <a href="#" class="logo">
+            <img src="{{ url_for('static', filename='img/mc.png')}}" width="60" height="50" alt="Grilli - Home">
+        </a>
+
+        <ul class="navbar-list">
+
+            <li class="navbar-item">
+                <a href="/#menu" class="navbar-link hover-underline">
+                  <div class="separator"></div>
+    
+                  <span class="span">Menus</span>
+                </a>
+              </li>
+    
+              <li class="navbar-item">
+                <a href="/carrinho" class="navbar-link hover-underline">
+                  <div class="separator"></div>
+    
+                  <span class="span">Carrinho</span>
+                </a>
+              </li>
+    
+              <li class="navbar-item">
+                <a href="#" class="navbar-link hover-underline">
+                  <div class="separator"></div>
+    
+                  <span class="span">Contact</span>
+                </a>
+              </li>
+
+        </ul>
+
+        <div class="text-center">
+          <p class="headline-1 navbar-title">Visit Us</p>
+
+         
+
+      </nav>
+
+      <i id="card-icon" class='bx bx-cart'></i>
+      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+      </button>
+
+      <div class="overlay" data-nav-toggler data-overlay></div>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+   
+
+
+
+
+      <!-- 
+        - #MENU
+      -->
+
+      <section class="section menu" aria-label="menu-label" id="menu">
+        <div class="container">
+
+          <p class="section-subtitle text-center label-2">Carrinho</p>
+          {% if produto == [] %}
+            <br>
+            <br>  
+            <h2 class="headline-1 section-title text-center">Seu carrinho esta vazio</h2>
+
+        {% else %}
+
+          <h2 class="headline-1 section-title text-center">Seus Itens</h2>
+
+          <ul class="grid-list">
+            {% for p in produto %}
+            <li>
+              <div class="menu-card hover:card">
+
+                <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
+                  <img src="{{ p['foto'] }}" width="100" height="100" loading="lazy" alt="Greek Salad"
+                    class="img-min">
+                </figure>
+
+                <div>
+
+                  <div class="title-wrapper">
+                    <h3 class="title-3">
+                      <a href="#" class="card-title">{{ p['nome'] }}</a>
+                    </h3>
+                    {% if p['adicionais'] != [] and p['categoria'] != 'Bebidas' %}
+                        <span class="badge label-1">Com adicionais</span>
+                    {% endif %}
+
+                    <span class="span title-2">R$ {{ p['preco'] }}</span>
+                  </div>
+
+                  <p class="card-text label-1">
+                    {{ p['descricao'] }}
+                  </p>
+              
+                   <div class="options">
+                    <div class="quant__card" data-preco="{{ p['preco'] }}">
+                    <i class="ri-subtract-line" data-index="{{ p['index'] }}"></i>
+                    <span class="quant__item__card">{{ p['quantidade'] }}</span>
+                    <i class="ri-add-line" data-index="{{ p['index'] }}"></i>
+                    </div>
+                    <div href="" class="btn-add remove" data-index="{{ p['index'] }}">
+                    <i class='bx bx-x'></i>
+                    </div>
+                  
+                  </div>
+                
+                </div>
+               
+              </div>
+              
+            </li>
+
+           {% endfor %}
+          
+
+          </ul>
+
+          <p class="menu-text text-center">
+            Total a pagar: R$ <span id="total">0</span>
+          </p>
+
+          <a class="btn btn-primary" id="finalizar">
+            <span class="text text-1">Finalizar</span>
+
+            <span class="text text-2" id="finalizar" aria-hidden="true">Finalizar</span>
+          </a>
+          <a href="/#menu" class="btn btn-primary" id="finalizar">
+            <span class="text text-1">Continuar comprando</span>
+
+            <span class="text text-2" id="finalizar" aria-hidden="true">Continuar comprando</span>
+          </a>
+
+        
+        </div>
+        {% endif %}
+      </section>
+
+
+
+
+
+      <!-- 
+        - #TESTIMONIALS
+      -->
+
+      
+
+
+
+
+
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn active" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="{{ url_for('static', filename='js/principal.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/carrinho.js')}}"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

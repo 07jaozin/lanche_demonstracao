@@ -1,0 +1,52 @@
+</html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Navegação</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-black via-gray-900 to-black min-h-screen flex items-center justify-center p-6">
+
+  <div class="bg-white p-10 rounded-3xl shadow-2xl max-w-3xl w-full">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Painel Administrativo</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      
+      <!-- Link 1: Cadastro e verificação de produtos -->
+      <a href="/produto_pag" class="flex flex-col items-center justify-center text-center bg-gradient-to-r from-purple-600 to-pink-500 text-white p-8 rounded-2xl shadow-md hover:scale-105 transition-transform">
+        <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        <span class="text-xl font-semibold">Cadastrar e Verificar Produtos</span>
+      </a>
+
+      <!-- Link 2: Pedidos de hoje -->
+      <a href="/pedidos_hoje" class="flex flex-col items-center justify-center text-center bg-gradient-to-r from-green-600 to-emerald-500 text-white p-8 rounded-2xl shadow-md hover:scale-105 transition-transform">
+        <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10m-10 4h6m6 2a2 2 0 002-2V7a2 2 0 00-2-2h-1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H5a2 2 0 00-2 2v5a2 2 0 002 2z" />
+        </svg>
+        <span class="text-xl font-semibold">Pedidos de Hoje</span>
+      </a>
+
+      <!-- Link 3: Todos os pedidos -->
+      <a href="/pedidos_all" class="flex flex-col items-center justify-center text-center bg-gradient-to-r from-blue-600 to-indigo-500 text-white p-8 rounded-2xl shadow-md hover:scale-105 transition-transform">
+        <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
+        </svg>
+        <span class="text-xl font-semibold">Todos os Pedidos</span>
+      </a>
+
+      <!-- Link extra opcional -->
+      <a href="/" class="flex flex-col items-center justify-center text-center bg-gradient-to-r from-gray-800 to-gray-700 text-white p-8 rounded-2xl shadow-md hover:scale-105 transition-transform">
+        <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m4 0h5a1 1 0 001-1V10" />
+        </svg>
+        <span class="text-xl font-semibold">Voltar à Página Inicial</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

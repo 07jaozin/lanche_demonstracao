@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-black min-h-screen px-4 py-10 overflow-auto">
+
+    <div class="mt-16 bg-white p-8 rounded-3xl shadow-2xl w-full max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Pedidos Realizados</h2>
+      
+        {% if pedidos %}
+          {% for pedido in pedidos %}
+          <div class="mb-12 border rounded-xl shadow-md">
+            <div class="bg-gray-100 px-6 py-4 rounded-t-xl">
+              <h3 class="text-xl font-semibold text-gray-800">Pedido #{{ pedido.id }}</h3>
+              <p class="text-sm text-gray-600 mt-1">Cliente: <strong>{{ pedido.nome }}</strong> | Telefone: {{ pedido.telefone }}</p>
+              <p class="text-sm text-gray-600">{{ pedido.entrega }} {% if pedido.endereco %} - Endereço: {{ pedido.endereco }}{% endif %}</p>
+              <p class="text-sm text-gray-600">Observações: {% if pedido.endereco %} {{ pedido.observacao }} {% else %} Nenhuma {% endif %}</p>
+              <p class="text-sm text-gray-800 font-medium mt-2">Total a pagar: R$ {{ '%.2f' | format(pedido.total_pagar) }}</p>
+            </div>
+      
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200 text-center">
+                <thead class="bg-white">
+                  <tr>
+                    
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Produto</th>
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Categoria</th>
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Preço (R$)</th>
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Quantidade</th>
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Adicionais</th>
+                    <th class="px-4 py-3 text-sm font-medium text-gray-700">Subtotal (R$)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-300 bg-white">
+                  {% for item in pedidosItem %}
+                    {% if item.id_pedido == pedido.id %}
+                    <tr class="hover:bg-gray-50 transition">
+                     
+                      <td class="px-4 py-3">{{ item.nome_produto }}</td>
+                      <td class="px-4 py-3">{{ item.categoria }}</td>
+                      <td class="px-4 py-3">R$ {{ '%.2f' | format(item.preco_produto) }}</td>
+                      <td class="px-4 py-3">{{ item.quantidade }}</td>
+                      <td class="px-4 py-3">{{ item.adicionais }}</td>
+                      <td class="px-4 py-3">R$ {{ '%.2f' | format(item.preco_produto * item.quantidade) }}</td>
+                    </tr>
+                    {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center text-gray-600 text-lg mt-4">Nenhum pedido registrado.</p>
+        {% endif %}
+      </div>
+</body>
+</html>

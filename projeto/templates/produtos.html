@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-black min-h-screen px-4 py-10 overflow-auto">
+
+    <div class="flex flex-col md:flex-row gap-10 justify-center w-full">
+
+        <!-- Formulário 1 - Produto -->
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg">
+          <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Cadastro de Produto</h1>
+    
+          <form action="/produto_pag" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- Nome -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Nome do Produto</label>
+              <input type="text" name="nome" required
+                class="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+    
+            <!-- Descrição -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Descrição</label>
+              <textarea name="descricao" rows="4" required
+                class="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+            </div>
+    
+            <!-- Categoria - Radio -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Categoria</label>
+              <div class="flex gap-6">
+                <label class="flex items-center">
+                  <input type="radio" name="categoria" value="Bebidas" required
+                    class="h-5 w-5 text-purple-600 focus:ring-purple-500">
+                  <span class="ml-2 text-gray-700 text-lg">Bebidas</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="categoria" value="Lanches" required
+                    class="h-5 w-5 text-purple-600 focus:ring-purple-500">
+                  <span class="ml-2 text-gray-700 text-lg">Lanches</span>
+                </label>
+              </div>
+            </div>
+    
+            <!-- Preço -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Preço (R$)</label>
+              <input type="number" step="0.01" min="0" name="preco" required
+                class="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+    
+            <!-- Foto -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Foto do Produto</label>
+              <input type="file" name="foto" accept="image/*" required
+                class="w-full p-3 border rounded-xl shadow-sm cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+    
+            <!-- Botão -->
+            <div class="flex justify-center">
+              <button type="submit"
+                class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold shadow-md transition-transform transform hover:scale-105">
+                Cadastrar Produto
+              </button>
+            </div>
+          </form>
+        </div>
+    
+        <!-- Formulário 2 - Adicionais -->
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-lg">
+          <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Cadastro de Adicionais</h1>
+    
+          <form action="/adicionais" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- Sabor -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Sabor</label>
+              <input type="text" name="sabor" required
+                class="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+    
+            <!-- Preço -->
+            <div>
+              <label class="block mb-2 text-lg font-medium text-gray-700">Preço (R$)</label>
+              <input type="number" step="0.01" min="0" name="preco-ad" required
+                class="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+    
+            <!-- Botão -->
+            <div class="flex justify-center">
+              <button type="submit"
+                class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold shadow-md transition-transform transform hover:scale-105">
+                Cadastrar Adicional
+              </button>
+            </div>
+          </form>
+        </div>
+    
+      </div>
+      <div class="mt-16 bg-white p-8 rounded-3xl shadow-2xl w-full max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Produtos Cadastrados</h2>
+      
+        {% if produtos %}
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-center">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">#</th>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">Nome</th>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">Descrição</th>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">Categoria</th>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">Preço (R$)</th>
+                <th class="px-4 py-3 text-sm font-medium text-gray-700">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300">
+              {% for p in produtos %}
+              <tr class="hover:bg-gray-50 transition">
+                <td class="px-4 py-3">{{ loop.index }}</td>
+                <td class="px-4 py-3">{{ p.nome }}</td>
+                <td class="px-4 py-3">{{ p.descricao }}</td>
+                <td class="px-4 py-3">{{ p.categoria }}</td>
+                <td class="px-4 py-3">R$ {{ '%.2f' | format(p.preco) }}</td>
+                <td class="px-4 py-3 space-x-2">
+                  <a href="/editar/{{ p.id_produto }}" class="bg-yellow-400 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-yellow-500 transition">Editar</a>
+                  <form action="/excluir/{{ p.id_produto }}" method="POST" class="inline">
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600 transition">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+          <p class="text-center text-gray-600 text-lg mt-4">Nenhum produto cadastrado.</p>
+        {% endif %}
+      </div>
+</body>
+</html>
