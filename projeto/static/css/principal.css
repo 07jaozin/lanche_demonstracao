@@ -337,7 +337,7 @@
   }
   
   .section-subtitle::after {
-    content: url('../images/separator.svg');
+    content: url('../img/separator.svg');
     display: block;
     width: 100px;
     margin-inline: auto;
@@ -1298,7 +1298,7 @@
   .footer-brand {
     position: relative;
     padding: 50px 40px;
-    background: var(--smoky-black-1) url("../images/footer-form-bg.png");
+    background: var(--smoky-black-1) url("../img/footer-bg.jpg");
     background-position: center top;
     background-repeat: repeat;
   }
@@ -1308,7 +1308,7 @@
     top: 0;
     width: 15px;
     height: 100%;
-    background-image: url("../images/footer-form-pattern.svg");
+    background-image: url("../img/footer-form-pattern.svg");
   }
   
   .footer-brand::before { left: 0; }
