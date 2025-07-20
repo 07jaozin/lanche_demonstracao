@@ -15,7 +15,13 @@ window.addEventListener("load", function () {
   document.body.classList.add("loaded");
 });
 
+const preco = document.querySelectorAll('.preco');
 
+preco.forEach(botao => {
+      let valor = parseFloat(botao.innerText);
+      console.log(valor)
+      botao.innerText = valor.toFixed(2).replace(".",",");
+})
 
 /**
  * add event listener on multiple elements

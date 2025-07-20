@@ -4,6 +4,7 @@ from projeto.config.config import Config
 from projeto.controller.cadastrarProd import ProdutoController
 from projeto.controller.adicionaisController import AdicionaisController
 from projeto.controller.pedidosController import PedidosController
+from projeto.controller.autenticacao import Autenticacao
 from projeto.model.pedidos import Pedido, PedidoItem
 
 
@@ -17,6 +18,7 @@ db.init_app(app)
 produtosController = ProdutoController()
 adicionaisController = AdicionaisController()
 pedidosController = PedidosController()
+autenticacaoClass = Autenticacao()
 
 with app.app_context():
     db.create_all()
@@ -30,34 +32,45 @@ def home():
 
 @app.route('/gerenciamento')
 def geren():
-    return render_template("gerenciamento.html")
+    print(session.get('adm'))
+    if session.get('adm'):
+        return render_template("gerenciamento.html")
+    else:
+        return redirect('/')
 
 @app.route('/produto_pag', methods = ['POST', 'GET'])
 def produto_pag():
-    if request.method == 'POST':
-        nome = request.form.get('nome')
-        descricao = request.form.get('descricao')
-        categoria = request.form.get('categoria')
-        preco = request.form.get('preco')
-        foto = request.files['foto']
+    if session.get('adm'):
+        if request.method == 'POST':
+            nome = request.form.get('nome')
+            descricao = request.form.get('descricao')
+            categoria = request.form.get('categoria')
+            preco = request.form.get('preco')
+            foto = request.files['foto']
 
-        produtosController.cadastrar_produto(nome, descricao, categoria, preco, foto)
-        return redirect('/produto_pag')
-    
+            produtosController.cadastrar_produto(nome, descricao, categoria, preco, foto)
+            return redirect('/produto_pag')
+
+        else:
+            produtos = produtosController.listar_produtos()
+
+            return render_template("produtos.html", produtos = produtos)
+        
     else:
-        produtos = produtosController.listar_produtos()
-
-        return render_template("produtos.html", produtos = produtos)
+        return redirect('/')
 
 @app.route('/adicionais', methods = ['POST'])
 def adicionais():
-    sabor = request.form.get('sabor')
-    preco = request.form.get('preco-ad')
+    if session.get('adm'):
 
-    adicionaisController.adicionar(sabor,preco)
+        sabor = request.form.get('sabor')
+        preco = request.form.get('preco-ad')
 
-    return redirect('/gerenciamento')
+        adicionaisController.adicionar(sabor,preco)
+
+        return redirect('/gerenciamento')
     
+    return redirect('/')
 
 
 
@@ -132,18 +145,22 @@ def finalizar_total():
 
 @app.route('/editar/<int:id>', methods = ['GET', 'POST'])
 def editar(id):
-    if request.method == 'POST':
-        nome = request.form.get('nome-editar')
-        descricao = request.form.get('descricao-editar')
-        categoria = request.form.get('categoria-editar')
-        preco = request.form.get('preco-editar')
-        foto = request.files['foto-editar']
-        produtosController.editar_produto( id, nome, descricao, categoria, preco, foto)
-        return redirect('/gerenciamento')
+    if session.get('adm'):
+        if request.method == 'POST':
+            nome = request.form.get('nome-editar')
+            descricao = request.form.get('descricao-editar')
+            categoria = request.form.get('categoria-editar')
+            preco = request.form.get('preco-editar')
+            foto = request.files['foto-editar']
+            produtosController.editar_produto( id, nome, descricao, categoria, preco, foto)
+            return redirect('/gerenciamento')
+
+        else:
+            produto = produtosController.achar_produto(id)
+            return render_template("editar.html", produto = produto)  
 
     else:
-        produto = produtosController.achar_produto(id)
-        return render_template("editar.html", produto = produto)       
+        return redirect('/')     
     
 @app.route('/finalizar', methods = ['GET', 'POST'])
 def finalizar():
@@ -176,16 +193,35 @@ def sucesso():
 
 @app.route('/pedidos_hoje')
 def pedidos_hoje():
-    pedidos = pedidosController.listar_pedidos_hoje()
-    pedidosItem = pedidosController.listar_pedidosItem()
+    if session.get('adm'):
+        pedidos = pedidosController.listar_pedidos_hoje()
+        pedidosItem = pedidosController.listar_pedidosItem()
 
-    return render_template("pedidosHoje.html", pedidos = pedidos, pedidosItem = pedidosItem)
+        return render_template("pedidosHoje.html", pedidos = pedidos, pedidosItem = pedidosItem)
+    else:
+        return redirect('/')
 @app.route('/pedidos_all')
 def pedidos_all():
-    pedidos = pedidosController.listar_pedidos()
-    pedidosItem = pedidosController.listar_pedidosItem()
+    if session.get('adm'):
+        pedidos = pedidosController.listar_pedidos()
+        pedidosItem = pedidosController.listar_pedidosItem()
 
-    return render_template("pedidosTotal.html", pedidos = pedidos, pedidosItem = pedidosItem)
+        return render_template("pedidosTotal.html", pedidos = pedidos, pedidosItem = pedidosItem)
+    else:
+        return redirect('/')
+
+
+@app.route('/autenticacao', methods = ['GET', 'POST'])
+def autenticacao():
+    if request.method == 'POST':
+        senha = request.form.get('senha')
+        if autenticacaoClass.verificacao(senha):
+            return redirect('/gerenciamento')
+        
+        else:
+            return redirect('/autenticacao')
+    else:
+        return render_template("autenticacao.html") 
 
 
 if __name__ == '__main__':
