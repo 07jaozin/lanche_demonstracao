@@ -86,7 +86,7 @@ class PedidosController:
                 print(i)
                 print(quant)
                 i['quantidade'] = quant
-                i['preco'] += i['preco']
+               
         
         return True
     

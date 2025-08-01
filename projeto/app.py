@@ -152,6 +152,7 @@ def editar(id):
             categoria = request.form.get('categoria-editar')
             preco = request.form.get('preco-editar')
             foto = request.files['foto-editar']
+            
             produtosController.editar_produto( id, nome, descricao, categoria, preco, foto)
             return redirect('/gerenciamento')
 
