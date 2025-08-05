@@ -131,7 +131,7 @@ class PedidosController:
         for i in lista:
             print('preco', i['preco'])
             print('preco', i['quantidade'])
-            total += i['preco']
+            total += i['preco'] * i['quantidade']
 
         self.__total = total
 

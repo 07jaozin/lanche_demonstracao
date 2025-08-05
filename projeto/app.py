@@ -162,7 +162,16 @@ def editar(id):
 
     else:
         return redirect('/')     
+
+@app.route('/excluir/<int:id>', methods = ['POST'])
+def excluir(id):
+
+    if produtosController.excluir_produto(id):
+        return redirect('/produto_pag')
     
+    else:
+        return "erro", 404
+
 @app.route('/finalizar', methods = ['GET', 'POST'])
 def finalizar():
     if request.method == 'POST':
