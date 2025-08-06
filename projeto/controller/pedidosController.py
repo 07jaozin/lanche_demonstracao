@@ -20,6 +20,8 @@ class PedidosController:
     def bebida(item):
         PedidosController.init_session()
         encontrado = False
+        print(item)
+        print(session['carrinho'])
         for i in session['carrinho']:
             print(item)
             print(i['id'])
