@@ -2,29 +2,27 @@ from projeto.model.pedidos import Pedido, PedidoItem
 from projeto.model.produtos import Produto
 from projeto.extension.extensoes import db
 from datetime import date
+from flask import session
 
 
 class PedidosController:
-
-    def __init__(self):
-        self.__lista = []
-        self.__index = 0
-        self.__total = 0
-
-
-    def bebida(self, item):
+    session['carrinho'] = []
+    session['index'] = 0
+    session['total'] = 0
+    
+    def bebida(item):
         encontrado = False
-        for i in self.__lista:
+        for i in session['carrinho']:
             if i['id'] == item:
                 i['quantidade'] += i['quantidade']
                 encontrado = True
 
         if not encontrado:
             produto = Produto.query.filter_by(id_produto = item).first()
-            self.__index += 1
+            session['index'] += 1
             novo_produto = {
                 'id': item,
-                'index': self.__index,
+                'index':session['index'],
                 'nome': produto.nome,
                 'categoria': produto.categoria,
                 'descricao': produto.descricao,
@@ -33,27 +31,27 @@ class PedidosController:
                 'quantidade': 1,
                 'adicionais': '' 
             }
-            self.__lista.append(novo_produto)
+            session['carrinho'].append(novo_produto)
 
         return True
 
 
 
 
-    def adiciona_carrinho(self, item, adicionais, preco):
+    def adiciona_carrinho(item, adicionais, preco):
         encontrado = False
 
-        for i in self.__lista:
+        for i in session['carrinho']:
             if i['id'] == item[0] and i['adicionais'] == adicionais:
                 i['quantidade'] += i['quantidade']
                 encontrado = True
 
         if not encontrado:
             produto = Produto.query.filter_by(id_produto = item[0]).first()
-            self.__index += 1
+           session['index'] += 1
             novo_item = {
                 'id': item[0],
-                'index': self.__index,
+                'index': session['index'],
                 'nome': produto.nome,
                 'categoria': produto.categoria,
                 'descricao': produto.descricao,
@@ -62,25 +60,25 @@ class PedidosController:
                 'quantidade': 1, 
                 'adicionais': adicionais
             }
-            self.__lista.append(novo_item)
+            session['carrinho'].append(novo_item)
         
 
-        print(self.__lista)
+       
         return True
     
 
     @property
-    def lista_carrinho(self):
-        return self.__lista
+    def lista_carrinho():
+        return session['carrinho']
     @property
-    def total_valor(self):
-        return self.__total
+    def total_valor():
+        return session['total']
 
     
-    def atualiza(self, index, quant):
+    def atualiza(index, quant):
        
        
-        for i in self.__lista:
+        for i in session['carrinho']:
             if i['index'] == int(index):
                 print(i)
                 print(quant)
@@ -89,17 +87,17 @@ class PedidosController:
         
         return True
     
-    def exclui_pedido(self, index):
-        itens  = self.__lista
+    def exclui_pedido(index):
+        itens  = session['carrinho']
         for item in itens:
             if item['index'] == index:
-                self.__lista.remove(item)
+                session['carrinho'].remove(item)
         return True
 
-    def finalizar_pedido(self, nome, telefone, observacao, entrega, endereco):
-        itens = self.__lista
-        total = self.__total
-        print(total)
+    def finalizar_pedido(nome, telefone, observacao, entrega, endereco):
+        itens = session['carrinho']
+        total =session['total']
+        
       
 
         if entrega == 'Retirada':
@@ -121,16 +119,16 @@ class PedidosController:
             db.session.add(novo_pedidoItem)
             db.session.commit()
 
-        self.__lista = []
+        session['carrinho'] = []
         return True
     
-    def total(self, valor):
-        lista = self.__lista
+    def total(valor):
+        lista = session['carrinho']
         total = 0
         for i in lista:
             total += i['preco'] * i['quantidade']
 
-        self.__total = total
+        session['total'] = total
 
         return True
     @staticmethod
