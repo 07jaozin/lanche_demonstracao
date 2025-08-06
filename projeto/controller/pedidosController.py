@@ -6,11 +6,19 @@ from flask import session
 
 
 class PedidosController:
-    session['carrinho'] = []
-    session['index'] = 0
-    session['total'] = 0
-    
+
+    @staticmethod
+    def init_session():
+        if 'carrinho' not in session:
+            session['carrinho'] = []
+        if 'index' not in session:
+            session['index'] = 0
+        if 'total' not in session:
+            session['total'] = 0
+
+    @staticmethod
     def bebida(item):
+        PedidosController.init_session()
         encontrado = False
         for i in session['carrinho']:
             if i['id'] == item:
@@ -18,27 +26,26 @@ class PedidosController:
                 encontrado = True
 
         if not encontrado:
-            produto = Produto.query.filter_by(id_produto = item).first()
+            produto = Produto.query.filter_by(id_produto=item).first()
             session['index'] += 1
             novo_produto = {
                 'id': item,
-                'index':session['index'],
+                'index': session['index'],
                 'nome': produto.nome,
                 'categoria': produto.categoria,
                 'descricao': produto.descricao,
                 'preco': float(produto.preco),
                 'foto': produto.foto,
                 'quantidade': 1,
-                'adicionais': '' 
+                'adicionais': ''
             }
             session['carrinho'].append(novo_produto)
 
         return True
 
-
-
-
+    @staticmethod
     def adiciona_carrinho(item, adicionais, preco):
+        PedidosController.init_session()
         encontrado = False
 
         for i in session['carrinho']:
@@ -47,8 +54,8 @@ class PedidosController:
                 encontrado = True
 
         if not encontrado:
-            produto = Produto.query.filter_by(id_produto = item[0]).first()
-           session['index'] += 1
+            produto = Produto.query.filter_by(id_produto=item[0]).first()
+            session['index'] += 1
             novo_item = {
                 'id': item[0],
                 'index': session['index'],
@@ -57,96 +64,93 @@ class PedidosController:
                 'descricao': produto.descricao,
                 'preco': float(preco),
                 'foto': produto.foto,
-                'quantidade': 1, 
+                'quantidade': 1,
                 'adicionais': adicionais
             }
             session['carrinho'].append(novo_item)
-        
 
-       
         return True
-    
 
-    @property
+    @staticmethod
     def lista_carrinho():
+        PedidosController.init_session()
         return session['carrinho']
-    @property
+
+    @staticmethod
     def total_valor():
+        PedidosController.init_session()
         return session['total']
 
-    
+    @staticmethod
     def atualiza(index, quant):
-       
-       
+        PedidosController.init_session()
         for i in session['carrinho']:
             if i['index'] == int(index):
-                print(i)
-                print(quant)
                 i['quantidade'] = quant
-               
-        
         return True
-    
+
+    @staticmethod
     def exclui_pedido(index):
-        itens  = session['carrinho']
-        for item in itens:
-            if item['index'] == index:
-                session['carrinho'].remove(item)
+        PedidosController.init_session()
+        session['carrinho'] = [item for item in session['carrinho'] if item['index'] != index]
         return True
 
+    @staticmethod
     def finalizar_pedido(nome, telefone, observacao, entrega, endereco):
+        PedidosController.init_session()
         itens = session['carrinho']
-        total =session['total']
-        
-      
+        total = session['total']
 
-        if entrega == 'Retirada':
-            print("aqui retirada")
-            novo_pedido = Pedido(nome = nome, telefone = telefone, observacao = observacao, entrega = entrega, endereco = endereco, total_pagar = float(total))
-            db.session.add(novo_pedido)
-            db.session.commit()
-        else:
-            print("aqui entrega")
-            novo_pedido = Pedido(nome = nome, telefone = telefone, observacao = observacao, entrega = entrega, endereco = endereco, total_pagar = float(total))
-            db.session.add(novo_pedido)
-            db.session.commit()
+        novo_pedido = Pedido(
+            nome=nome,
+            telefone=telefone,
+            observacao=observacao,
+            entrega=entrega,
+            endereco=endereco,
+            total_pagar=float(total)
+        )
+        db.session.add(novo_pedido)
+        db.session.commit()
 
         for i in itens:
-            if i['adicionais']:
-                novo_pedidoItem = PedidoItem( id_pedido = novo_pedido.id , nome_produto = i['nome'], categoria = i['categoria'], preco_produto = i['preco']/i['quantidade'], quantidade = i['quantidade'], adicionais = ', '.join(i['adicionais']), nome_usuario = nome )
+            adicionais = i['adicionais']
+            if adicionais:
+                adicionais_str = adicionais if isinstance(adicionais, str) else ', '.join(adicionais)
             else:
-                novo_pedidoItem = PedidoItem( id_pedido = novo_pedido.id , nome_produto = i['nome'], categoria = i['categoria'], preco_produto = i['preco'], quantidade = i['quantidade'], adicionais = '', nome_usuario = nome )
-            db.session.add(novo_pedidoItem)
-            db.session.commit()
+                adicionais_str = ''
 
+            preco_unitario = i['preco'] / i['quantidade'] if i['quantidade'] != 0 else 0
+            novo_pedido_item = PedidoItem(
+                id_pedido=novo_pedido.id,
+                nome_produto=i['nome'],
+                categoria=i['categoria'],
+                preco_produto=preco_unitario,
+                quantidade=i['quantidade'],
+                adicionais=adicionais_str,
+                nome_usuario=nome
+            )
+            db.session.add(novo_pedido_item)
+
+        db.session.commit()
         session['carrinho'] = []
         return True
-    
-    def total(valor):
-        lista = session['carrinho']
-        total = 0
-        for i in lista:
-            total += i['preco'] * i['quantidade']
 
+    @staticmethod
+    def total():
+        PedidosController.init_session()
+        total = sum(i['preco'] * i['quantidade'] for i in session['carrinho'])
         session['total'] = total
-
         return True
+
     @staticmethod
     def listar_pedidos():
-        pedidos = Pedido.query.all()
-        return pedidos
+        return Pedido.query.all()
+
     @staticmethod
     def listar_pedidosItem():
-        pedidos = PedidoItem.query.all()
-        return pedidos
-    
-    @staticmethod 
+        return PedidoItem.query.all()
+
+    @staticmethod
     def listar_pedidos_hoje():
         data = date.today()
-        produtos = Pedido.query.filter_by(data = data).all()
-
-        return produtos
-
-
-
-            
+        return Pedido.query.filter_by(data=data).all()
