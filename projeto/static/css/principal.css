@@ -241,7 +241,9 @@
   
   .body-1 {
     font-size: var(--fontSize-body-1);
-    line-height: var(--lineHeight-6);
+    line-height: var(--lineHeight-6); 
+    display: flex;
+    flex-direction: row;
   }
   
   .body-2 {
