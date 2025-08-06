@@ -113,7 +113,7 @@ def carrinho():
         return redirect('/carrinho')
     
     else:
-        produto = pedidosController.lista_carrinho
+        produto = pedidosController.lista_carrinho()
         print(produto)
 
         return render_template("carrinho.html", produto = produto)
@@ -194,7 +194,7 @@ def finalizar():
         lista = pedidosController.lista_carrinho
         if lista == []:
             return redirect('/carrinho')
-        total = pedidosController.total_valor
+        total = pedidosController.total_valor()
         return render_template("finalizar.html", total = total)
     
 @app.route('/sucesso')
