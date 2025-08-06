@@ -72,10 +72,11 @@
   -->
 
   <header class="header" data-header>
+    
     <div class="container">
 
       <a href="#" class="logo">
-        <img src="./assets/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+        <img src="{{ url_for('static', filename='img/mc.png')}}" width="60" height="50" alt="Grilli - Home">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -85,21 +86,13 @@
         </button>
 
         <a href="#" class="logo">
-          <img src="./assets/images/logo.svg" width="160" height="50" alt="Grilli - Home">
+            <img src="{{ url_for('static', filename='img/mc.png')}}" width="60" height="50" alt="Grilli - Home">
         </a>
 
         <ul class="navbar-list">
 
             <li class="navbar-item">
-                <a href="index.html" class="navbar-link hover-underline active">
-                  <div class="separator"></div>
-    
-                  <span class="span">Home</span>
-                </a>
-              </li>
-    
-              <li class="navbar-item">
-                <a href="unique.html" class="navbar-link hover-underline">
+                <a href="/#menu" class="navbar-link hover-underline">
                   <div class="separator"></div>
     
                   <span class="span">Menus</span>
@@ -107,28 +100,20 @@
               </li>
     
               <li class="navbar-item">
-                <a href="finalizar.html" class="navbar-link hover-underline">
+                <a href="/carrinho" class="navbar-link hover-underline">
                   <div class="separator"></div>
     
-                  <span class="span">About Us</span>
+                  <span class="span">Carrinho</span>
                 </a>
               </li>
-    
-              <li class="navbar-item">
-                <a href="itens.html" class="navbar-link hover-underline">
-                  <div class="separator"></div>
-    
-                  <span class="span">Our Chefs</span>
-                </a>
-              </li>
-    
-              <li class="navbar-item">
-                <a href="#" class="navbar-link hover-underline">
-                  <div class="separator"></div>
-    
-                  <span class="span">Contact</span>
-                </a>
-              </li>
+
+          <li class="navbar-item">
+            <a href="#" class="navbar-link hover-underline">
+              <div class="separator"></div>
+
+              <span class="span">Contact</span>
+            </a>
+          </li>
 
         </ul>
 
@@ -139,17 +124,14 @@
 
       </nav>
 
-      <a href="#" class="btn btn-secondary">
-        <span class="text text-1">Find A Table</span>
-
-        <span class="text text-2" aria-hidden="true">Find A Table</span>
-      </a>
-
+    
+      <i id="card-icon" class='bx bx-cart'></i>
       <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
         <span class="line line-3"></span>
       </button>
+      
 
       <div class="overlay" data-nav-toggler data-overlay></div>
 
