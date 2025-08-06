@@ -21,7 +21,7 @@ class PedidosController:
         PedidosController.init_session()
         encontrado = False
         for i in session['carrinho']:
-            if i['id'] == item:
+            if i['index'] == item:
                 i['quantidade'] += i['quantidade']
                 encontrado = True
 
