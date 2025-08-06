@@ -50,7 +50,7 @@ class PedidosController:
 
         for i in session['carrinho']:
             if i['id'] == item[0] and i['adicionais'] == adicionais:
-                i['quantidade'] += i['quantidade']
+                i['quantidade'] += 1
                 encontrado = True
 
         if not encontrado:
