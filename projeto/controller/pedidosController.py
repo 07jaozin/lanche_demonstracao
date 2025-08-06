@@ -71,7 +71,6 @@ class PedidosController:
 
     @property
     def lista_carrinho(self):
-        print(self.__lista)
         return self.__lista
     @property
     def total_valor(self):
@@ -129,8 +128,6 @@ class PedidosController:
         lista = self.__lista
         total = 0
         for i in lista:
-            print('preco', i['preco'])
-            print('preco', i['quantidade'])
             total += i['preco'] * i['quantidade']
 
         self.__total = total
