@@ -137,9 +137,8 @@ def remover_carrinho(index):
 
 @app.route('/finalizar_total', methods = ['POST'])
 def finalizar_total():
-    totall = 0
-    print(totall)
-    if pedidosController.total(totall):
+    
+    if pedidosController.total():
         return redirect('/finalizar')
 
 
