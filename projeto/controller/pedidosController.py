@@ -54,8 +54,9 @@ class PedidosController:
         encontrado = False
 
         for i in session['carrinho']:
-            if i['id'] == item[0] and i['adicionais'] == adicionais:
+            if int(i['id']) == int(item[0]) and i['adicionais'] == adicionais:
                 i['quantidade'] += 1
+                session.modified = True
                 encontrado = True
 
         if not encontrado:
