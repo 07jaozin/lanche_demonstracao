@@ -25,8 +25,9 @@ class PedidosController:
         for i in session['carrinho']:
             print(item)
             print(i['id'])
-            if i['id'] == item:
-                i['quantidade'] += 1
+            if int(i['id']) == int(item):
+                i['quantidade'] += 1 
+                session.modified = True
                 encontrado = True
 
         if not encontrado:
